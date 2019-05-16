@@ -4,7 +4,7 @@ const app = express();
 const port = 3000;
 const bodyParser= require ('body-parser');
 const cookieParser= require ('cookie-parser');
-
+const jwt = require('jsonwebtoken');
 
 
 //ejercicio 4
@@ -26,10 +26,34 @@ app.post('/pets', (req, res)=> {
 		res.status(400).send({error:'Pon correctos los datos'})
 	}
 });
-
 //-------------------------------------------------------------------
+app.post('/auth/signin', (req, res)=>{
+	console.log('req.body', req.body);
 
-/*app.all('/hello', (req, res) => res.send('Hello World!'))
+//Generar token y leer token
+
+jwt.sign({ user: req.body.user, theme: 'black' }, privateKey, function(err, token) {//estamos creando el token 
+    if(err) {
+      res.send(500).end();
+    } else {
+      res.status(200).send({token: token})
+    }
+	});
+  });
+// para verificar si el usuario existe en la base de datos
+
+jwt.verify(req.headers.authorization, privateKey, function(err, decoded) {
+    if(err) {
+      res.status(500).end('aqui')
+    } else {
+      console.log(decoded)
+      // checar ese usuario en la base datos a ver si existe
+    }
+  });
+
+//---------------------------------------------------------------------
+//all utiliza todos los metodos 
+app.all('/hello', (req, res) => res.send('Hello World!'))
 app.all('/bye', (req, res) => res.send('Bye Bye!'))
 app.use('/assets', express.static(path.join(__dirname, 'assets')))
 
@@ -62,7 +86,7 @@ app.get('/dog', (req, res)=>{
 
 app.get('/cat', (req, res)=>{
 	res.send("Hola");
-})*/
+})
 
 
 
