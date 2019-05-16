@@ -20,5 +20,24 @@ app.post('/menu', (req, res)=>{
 	res.status(404).send({foo: "tacos"})
 })
 
+//Middleware
+
+app.all('*', (req, res, next)=> {
+	console.log('Viri esta haciendo la actividad',req.path)
+	next()
+})
+app.get('/dog', (req, res)=>{
+	res.send("ven");
+})
+
+app.get('/dog', (req, res)=>{
+	res.send("ven2");
+})
+
+app.get('/cat', (req, res)=>{
+	res.send("Hola");
+})
+
+
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
