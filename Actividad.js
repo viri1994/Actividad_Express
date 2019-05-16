@@ -1,9 +1,35 @@
-const express = require('express')
-const path = require('path')
-const app = express()
-const port = 3000
+const express = require('express');
+const path = require('path');
+const app = express();
+const port = 3000;
+const bodyParser= require ('body-parser');
+const cookieParser= require ('cookie-parser');
 
-app.all('/hello', (req, res) => res.send('Hello World!'))
+
+
+//ejercicio 4
+let pets = [];
+
+app.use(bodyParser.json());
+app.use(cookieParser());
+
+
+app.post('/pets', (req, res)=> {
+	console.log(req.body)
+	console.log(req.cookies);// esto es para ver las cookies en consola
+
+
+	if(req.body.pet && req.body.name) {
+		pets.push(req.body);
+		res.status(201).send('ya quedo');
+	}else{
+		res.status(400).send({error:'Pon correctos los datos'})
+	}
+});
+
+//-------------------------------------------------------------------
+
+/*app.all('/hello', (req, res) => res.send('Hello World!'))
 app.all('/bye', (req, res) => res.send('Bye Bye!'))
 app.use('/assets', express.static(path.join(__dirname, 'assets')))
 
@@ -36,7 +62,9 @@ app.get('/dog', (req, res)=>{
 
 app.get('/cat', (req, res)=>{
 	res.send("Hola");
-})
+})*/
+
+
 
 
 
